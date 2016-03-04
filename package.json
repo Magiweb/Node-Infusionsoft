@@ -1,0 +1,24 @@
+{
+  "name": "Node-Infusionsoft",
+  "version": "1.0.0",
+  "description": "Infusion soft module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magiweb/Node-Infusionsoft.git"
+  },
+  "author": "Armenuhi Aproyan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Magiweb/Node-Infusionsoft/issues"
+  },
+  "homepage": "https://github.com/Magiweb/Node-Infusionsoft#readme",
+  "dependencies": {
+    "js2xmlparser": "^1.0.0",
+    "querystring": "^0.2.0",
+    "request": "^2.69.0"
+  }
+}
