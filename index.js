@@ -16,7 +16,8 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
          *  var tokenSecret = response.oauth_token_secret;
          * });
          */ 
-        getUrl: function (callback) {
+        getUrl: function () {
+                        
             var params = {
                 client_id: consumerKey,
                 response_type: 'code',
@@ -128,16 +129,19 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                 }
                 else {
                     
-                    var parser = require('libxml-to-js');
-
-                    parser(response.body, function (error, result) {
-                        if (error) {
+                    var xml2js = require('xml2js'),
+                    parser = new xml2js.Parser();
+                                
+                    parser.parseString(response.body, function (err, result) {
+                        
+                        if (err){
                             callback(error, false);
-                        } 
-                        else {
-                            callback(error, {id:result.params.param.value.i4});
                         }
-                    });                    
+                        else {
+                            callback(error, {id:result.methodResponse.params[0].param[0].value[0].i4[0]});
+                        }
+                    });
+                  
                 }
             });
         },
@@ -153,7 +157,7 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                         },
                         {
                             value: {
-                                string: 'Campaign'
+                                string: 'DataFormGroup'
                             }
                         },
                         {
@@ -170,9 +174,9 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                             value: {
                                 struct: {
                                     member: {
-                                        name: 'Status',
+                                        name: 'TabId',
                                         value: {
-                                            string: 'Active'
+                                            string: '2'
                                         }
                                     }
                                 }
@@ -197,7 +201,9 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                     ]
                 }
             };
-
+            
+            
+            
             var xml = js2xmlparser("methodCall", data);
  
             request.post({
@@ -206,24 +212,29 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                 headers: {'Content-Type': 'application/xml'}
             }, 
             function (error, response, body) {
-                
+                                
                 if (error){
                     callback(error, false);
                 }
                 
-                var parser = require('libxml-to-js');
-                
-                parser(response.body, function (error, result) {
-                    if (error) {
+                var xml2js = require('xml2js'),
+                    parser = new xml2js.Parser();
+                                                
+                parser.parseString(response.body, function (err, result) {
+                    
+                    if (err) {
                         callback(error, false);
-                    } else {
-                        var arResponse = result.params.param.value.array.data.value;
-                        var returnObj = [];
-                        
+                    } 
+                    else {
+                                                
+                        var arResponse = result.methodResponse.params[0].param[0].value[0].array[0].data[0].value,
+                            returnObj = [];
+                                                
                         arResponse.forEach(function(value, key){
+                            
                             returnObj.push({
-                                name: value.struct.member[0].value,
-                                id: value.struct.member[1].value.i4
+                                name: value.struct[0].member[0].value[0],
+                                id: value.struct[0].member[1].value[0].i4[0]
                             });
                         });
                         callback(false, returnObj);
@@ -267,10 +278,60 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                 if (error){
                     callback(error, false);
                 }
+               // console.log(response);
                 
                 callback(false, true);
             });
+        },
+        addCustomField: function(token, listId, label, callback){
+                        
+            var data = {
+                methodName: 'DataService.addCustomField',
+                params: {
+                    param: [
+                        {
+                            value: {
+                                string: token
+                            }
+                        },
+                        {
+                            value: {
+                                string: 'Contact'
+                            }
+                        },
+                        {
+                            value: {
+                                string: label
+                            }
+                        },
+                        {
+                            value: {
+                                string: 'Text'
+                            }
+                        },
+                        {
+                            value: {
+                                int: listId
+                            }
+                        }
+                    ]
+                }
+            };
+
+            var xml = js2xmlparser("methodCall", data);
+ 
+            request.post({
+                url: url + token,
+                body: xml,
+                headers: {'Content-Type': 'application/xml'}
+            }, 
+            function (error, response, body) {
+                                
+                if (error){
+                    callback(error, false);
+                }
+                
+            });
         }
-        
     };
 };

@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      "Node-Infusionsoft@git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+      "/var/opt/node/WebinarIgnition"
+    ]
+  ],
+  "_from": "git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+  "_id": "Node-Infusionsoft@1.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/Node-Infusionsoft",
+  "_phantomChildren": {
+    "aws4": "1.3.2",
+    "core-util-is": "1.0.2",
+    "extend": "3.0.0",
+    "har-validator": "2.0.6",
+    "inherits": "2.0.1",
+    "is-typedarray": "1.0.0",
+    "isarray": "0.0.1",
+    "isstream": "0.1.2",
+    "json-stringify-safe": "5.0.1",
+    "jsprim": "1.2.2",
+    "node-uuid": "1.4.7",
+    "process-nextick-args": "1.0.6",
+    "sshpk": "1.7.4",
+    "string_decoder": "0.10.31",
+    "stringstream": "0.0.5",
+    "tough-cookie": "2.2.1",
+    "tunnel-agent": "0.4.2",
+    "util-deprecate": "1.0.2"
+  },
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/Magiweb/Node-Infusionsoft/master/package.json",
+      "gitUrl": "git://github.com/Magiweb/Node-Infusionsoft.git",
+      "httpsUrl": "git+https://github.com/Magiweb/Node-Infusionsoft.git",
+      "shortcut": "github:Magiweb/Node-Infusionsoft",
+      "ssh": "git@github.com:Magiweb/Node-Infusionsoft.git",
+      "sshUrl": "git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+      "type": "github"
+    },
+    "name": "Node-Infusionsoft",
+    "raw": "Node-Infusionsoft@git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+    "rawSpec": "git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+    "scope": null,
+    "spec": "git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git#e4687d983df2ad2db793be2ffe107c7a1889f388",
+  "_shasum": "c105eb5cc60542cf1167325d3563173fb7d74d07",
+  "_shrinkwrap": null,
+  "_spec": "Node-Infusionsoft@git+ssh://git@github.com/Magiweb/Node-Infusionsoft.git",
+  "_where": "/var/opt/node/WebinarIgnition",
+  "author": {
+    "name": "Armenuhi Aproyan"
+  },
+  "bugs": {
+    "url": "https://github.com/Magiweb/Node-Infusionsoft/issues"
+  },
+  "dependencies": {
+    "js2xmlparser": "^1.0.0",
+    "querystring": "^0.2.0",
+    "request": "^2.69.0"
+  },
+  "description": "Infusion soft module",
+  "devDependencies": {},
+  "gitHead": "e4687d983df2ad2db793be2ffe107c7a1889f388",
+  "homepage": "https://github.com/Magiweb/Node-Infusionsoft#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "Node-Infusionsoft",
+  "optionalDependencies": {},
+  "readme": "# Node-Infusionsoft\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magiweb/Node-Infusionsoft.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
