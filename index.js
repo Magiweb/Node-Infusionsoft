@@ -6,7 +6,7 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
         request = require('request'),
         loginUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
         tokenUrl = 'https://api.infusionsoft.com/token';
-        
+
     return {
         /*
          * Returns oauth_token_secret and oauth_token via callback on success
@@ -15,9 +15,9 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
          *  var token = response.oauth_token;
          *  var tokenSecret = response.oauth_token_secret;
          * });
-         */ 
+         */
         getUrl: function () {
-                        
+
             var params = {
                 client_id: consumerKey,
                 response_type: 'code',
@@ -35,16 +35,16 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                 grant_type: 'authorization_code',
                 redirect_uri: callbackURL
             };
-            
+
             request.post({url: tokenUrl, form:params},function (error, response, body) {
-                
+
                     if (error){
                         callback(error, false);
                     }
                     else {
                         callback(error, JSON.parse(response.body));
                     }
-                    
+
                 }
             );
 
@@ -57,16 +57,16 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 Authorization: 'Basic ' + new Buffer(consumerKey + ':' + consumerSecret).toString('base64')
-            };        
+            };
             request.post({
-                url: tokenUrl, 
+                url: tokenUrl,
                 form: params,
                 headers: headers
             },
             function (error, response, body) {
-                
+
                 var responseObj = JSON.parse(response.body);
-                
+
                 if (error){
                     callback(responseObj.error, false);
                 }else if (responseObj.error){
@@ -76,8 +76,8 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                     callback(error, JSON.parse(response.body));
                 }
             });
-        },       
-        addContact: function (token, contacts, callback) {            
+        },
+        addContact: function (token, contacts, callback) {
             var data = {
                 methodName: 'ContactService.add',
                 params: {
@@ -122,18 +122,18 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                 url: url + token,
                 body: xml,
                 headers: {'Content-Type': 'application/xml'}
-            }, 
+            },
             function (error, response, body) {
                 if (error){
                     callback(error, false);
                 }
                 else {
-                    
+
                     var xml2js = require('xml2js'),
                     parser = new xml2js.Parser();
-                                
+
                     parser.parseString(response.body, function (err, result) {
-                        
+
                         if (err){
                             callback(error, false);
                         }
@@ -141,7 +141,7 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                             callback(error, {id:result.methodResponse.params[0].param[0].value[0].i4[0]});
                         }
                     });
-                  
+
                 }
             });
         },
@@ -201,41 +201,50 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
                     ]
                 }
             };
-            
-            
-            
+
+
+
             var xml = js2xmlparser("methodCall", data);
- 
+
             request.post({
                 url: url + token,
                 body: xml,
                 headers: {'Content-Type': 'application/xml'}
-            }, 
+            },
             function (error, response, body) {
-                                
+
                 if (error){
                     callback(error, false);
                 }
-                
+
                 var xml2js = require('xml2js'),
                     parser = new xml2js.Parser();
-                                                
+
                 parser.parseString(response.body, function (err, result) {
-                    
+
                     if (err) {
                         callback(error, false);
-                    } 
+                    }
                     else {
-                                                
+
                         var arResponse = result.methodResponse.params[0].param[0].value[0].array[0].data[0].value,
                             returnObj = [];
-                                                
+
                         arResponse.forEach(function(value, key){
-                            
-                            returnObj.push({
-                                name: value.struct[0].member[0].value[0],
-                                id: value.struct[0].member[1].value[0].i4[0]
-                            });
+                            var data = {};
+                            value.struct[ 0 ].member.forEach(
+                                function( value, key ) {
+                                    switch( value.name[ 0 ] ) {
+                                        case "Id":
+                                            data.id = value.value[ 0 ].i4[ 0 ];
+                                            break;
+                                        case "Name":
+                                            data.name = value.value[ 0 ];
+                                            break;
+                                    }
+                                }
+                            );
+                            returnObj.push(data);
                         });
                         callback(false, returnObj);
                     }
@@ -267,24 +276,24 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
             };
 
             var xml = js2xmlparser("methodCall", data);
- 
+
             request.post({
                 url: url + token,
                 body: xml,
                 headers: {'Content-Type': 'application/xml'}
-            }, 
+            },
             function (error, response, body) {
-                
+
                 if (error){
                     callback(error, false);
                 }
                // console.log(response);
-                
+
                 callback(false, true);
             });
         },
         addCustomField: function(token, listId, label, callback){
-                        
+
             var data = {
                 methodName: 'DataService.addCustomField',
                 params: {
@@ -319,18 +328,18 @@ module.exports = function (consumerKey, consumerSecret, callbackURL) {
             };
 
             var xml = js2xmlparser("methodCall", data);
- 
+
             request.post({
                 url: url + token,
                 body: xml,
                 headers: {'Content-Type': 'application/xml'}
-            }, 
+            },
             function (error, response, body) {
-                                
+
                 if (error){
                     callback(error, false);
                 }
-                
+
             });
         }
     };
